@@ -7,21 +7,38 @@
 <script src='PapaParse-4.3.2/papaparse.js'></script>
 
 <script type="text/javascript">
-var file = '二身表.csv';
+var url_1 = 'https://billxu0521.github.io/Dx2_tool/二身表.csv';
+var url_2 = 'https://billxu0521.github.io/Dx2_tool/二身表.csv';
+var twoDevil = new Array();
 
-// Parse local CSV file
-Papa.parse(file, {
-    complete: function(results) {
-        console.log("Finished:", results);
-    }
-});
+//網頁開始執行
+    $(function ()  {
+     // Parse local CSV file
+	Papa.parse(url_1, {
+		download: true,
+	    complete: function(results) {
+	        console.log("Finished:", results.data);
+	        twoDevil = results.data;
+	    }
+	});
+
+	Papa.parse(url, {
+		download: true,
+	    complete: function(results) {
+	        console.log("Finished:", results.data);
+	        twoDevil = results.data;
+	    }
+      
+    });
+
+
 
 </script>
 
 </head>
 
 <body>
-
+<div type='button' click=''>check!<>
 
     </body>
 </html>
