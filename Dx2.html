@@ -50,11 +50,14 @@ var target = 'アシェラト';
 				return b[1] - a[1];
 			});
 			//console.log(RankAllDevil);
+			showDevilTypeList();
+			showDevilList();
 	    }
     });
+    
 });
-    //逆二身種類查詢
-    function inverseTwoDevil(targetDevil){
+    //用名字做逆二身種類查詢
+    function inverseTwoDevilName(targetDevil){
     	var _type_ary = [];
     	//查詢二身表反推
 		for(var key in twoDevil){
@@ -69,6 +72,22 @@ var target = 'アシェラト';
 		}
 		return _type_ary;
     }
+    //用種族做逆二身種類查詢
+    function inverseTwoDevilTyoe(targetDevilType){
+    	var _type_ary = [];
+    	//查詢二身表反推
+		for(var key in twoDevil){
+			//console.log(_key);
+			for(var key_2 in twoDevil[key]){
+				//console.log(twoDevil[_key][_key_2][1]);
+				if(twoDevil[key][key_2][1] == targetDevilType){
+					//console.log(target + '/' + allDevil[target][2] + '=' + _key + '+' + twoDevil[_key][_key_2][0]);  //逆二身
+					_type_ary.push([key,twoDevil[key][key_2][0]]);
+				}
+			}
+		}
+		return _type_ary;
+    }
 
     //排序
 	function cus_sort(a,b) {   
@@ -76,14 +95,14 @@ var target = 'アシェラト';
 	}  
 
     //從目標惡魔查詢組合
-    function Devilcombin(targetDevil){
+    function devilCombin(targetDevil){
     	var _type_ary = [];//升級組合表
 		var _targetdevil_ary = []; //
 		var _devil_pack = [];
 		var _before_devil = '';//合成目標前一個惡魔
 		
 
-		_type_ary = inverseTwoDevil(targetDevil);
+		_type_ary = inverseTwoDevilName(targetDevil);
 		_targetdevil_ary = RankAllDevil;
 		_targetdevil_ary = _targetdevil_ary.sort(function (a, b) {
 					return b[1] - a[1];
@@ -146,6 +165,67 @@ var target = 'アシェラト';
 		}
 		//console.log(_devil_pack);
 		return _devil_pack;
+    }
+    //顯示種族列表
+    function showDevilTypeList(){
+    	var _ary = [];
+    	var $cSel = $('select[id="deviltypelist"]'); 
+
+    	for(var x in allDevil){
+    		_ary.push(allDevil[x][2]);
+    	}
+
+    	_ary = _ary.filter( (el, i, arr) => arr.indexOf(el) === i);
+    	for(var x in _ary){
+    	$cSel.append($("<option></option>")
+               .attr("value",_ary[x])
+               .text(_ary[x]));  
+    	}
+    }
+
+    //顯示所有仲魔列表
+    function showDevilList(){
+    	var _ary = [];
+    	var $cSel = $('select[id="devillist"]'); 
+    	_ary = RankAllDevil;
+		//依照garade大開始重新排序惡魔表
+		_ary = _ary.sort(function (a, b) {
+			return b[1] - a[1];
+		});
+    	for(var x in _ary){
+    	
+    	$cSel.append($("<option></option>")
+               .attr("value",_ary[x][0])
+               .text(_ary[x][0] + ':' + _ary[x][1]));  
+    	}
+    }
+
+    //查詢仲魔合成
+    function checkDevilCombin(){
+    	var $cSel = $('select[id="devillist"]');
+      	var select_option_val = $cSel.val();
+
+		var _ary = devilCombin(select_option_val);
+		var _str = '';
+		_str += select_option_val + ':';
+		for(var x in _ary){
+			_str += '<div>' + _ary[x][0] + '+' + _ary[x][1] + '</div>';
+		}
+		$('#devilCombinshow').html(_str);
+    }
+
+    //仲魔逆二身
+    function checktwoDevil(){
+    	var $cSel = $('select[id="deviltypelist"]');
+      	var select_option_val = $cSel.val();
+      	
+		var _ary = inverseTwoDevilTyoe(select_option_val);
+		var _str = '';
+		_str += select_option_val + ':';
+		for(var x in _ary){
+			_str += '<div>' + _ary[x][0] + '+' + _ary[x][1] + '</div>';
+		}
+		$('#twoDevilshow').html(_str);
 
     }
 
@@ -164,7 +244,7 @@ var target = 'アシェラト';
 		while(1){
 			if(index == 1){
 				_str = _str + index + ':';
-				_pack_ary = Devilcombin(target);
+				_pack_ary = devilCombin(target);
 				for(var i in _pack_ary){
 					if(_pack_ary[i][0] == start || _pack_ary[i][1] == start){
 						_str = target + '=' + _pack_ary[i][0] + '+' + _pack_ary[i][1];
@@ -178,7 +258,7 @@ var target = 'アシェラト';
 				_str = _str + index + ':';
 				for(var a in _ary){
 					for(var b in _ary[a]){
-						_pack_ary = Devilcombin(_ary[a][b]);
+						_pack_ary = devilCombin(_ary[a][b]);
 						var _new_ary = [];
 						_str = _str + _ary[a][0] + '+' + _ary[a][1] + '|';
 						for(var i in _pack_ary){
@@ -196,16 +276,31 @@ var target = 'アシェラト';
 			}
 			index ++;
 		}
-
 	}
 </script>
 
 </head>
 
 <body>
-<div>開始:<input type="text" id="start" /></div>
-<div>結束:<input type="text" id="target" /></div>
+<div>持有仲魔:<input type="text" id="start" /></div>
+<div>目標仲魔:<input type="text" id="target" /></div>
 <input type='button' onclick='setLine()' value='check!'></input>
+<div>
+	<select id="deviltypelist" >
+	<div>逆二身查詢(種族)</div>
+	<option selected value="default">請選擇仲魔種族</option>
+	<input type='button' onclick='checktwoDevil()' value='逆二身表查詢'></input>
+	<div id='twoDevilshow' style="height: 100%;"></div>
+</div>
+<div></div>
+<div></div>
+<select id="devillist" >
+<div>仲魔合成查詢</div>
+<div>
+	<option selected value="default">請選擇仲魔名稱</option>
+	<input type='button' onclick='checkDevilCombin()' value='仲魔查詢'></input>
+	<div id='devilCombinshow' style="height: 100%;"></div>
+</div>
 
     </body>
 </html>
