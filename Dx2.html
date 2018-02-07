@@ -159,7 +159,7 @@ var target = 'アシェラト';
 							continue; 
 						}
 					}else{
-						if( grade > allDevil[targetDevil][1] || grade <= allDevil[_before_devil][1]){
+						if( grade <= allDevil[_before_devil][1]){
 							continue; 
 						}
 					}
@@ -214,8 +214,17 @@ var target = 'アシェラト';
 		var _str = '';
 		_str += select_option_val + ':';
 		for(var x in _ary){
-			_str += '<div>[' + _ary[x][0] + '|Grade:' + allDevil[_ary[x][0]][1] + ']+[' + _ary[x][1] + '|Grade:' + allDevil[_ary[x][1]][1] +']</div>';
+			//檢查有無重複
+			var _first_devil = _ary[x][0]; //第一隻
+			var _second_devil = _ary[x][1]; //第二隻
+			for(var y in _ary){
+				if(_first_devil == _ary[y][1] && _second_devil == _ary[y][0]){
+					delete _ary[y];
+				}
+			}
+			_str += '<div>[' + _first_devil + '|Grade:' + allDevil[_ary[x][0]][1] + ']+[' + _second_devil + '|Grade:' + allDevil[_ary[x][1]][1] +']</div>';
 		}
+		
 		$('#devilCombinshow').html(_str);
     }
 
