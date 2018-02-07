@@ -197,7 +197,7 @@ var target = 'アシェラト';
     	
     	$cSel.append($("<option></option>")
                .attr("value",_ary[x][0])
-               .text(_ary[x][0] + ':' + _ary[x][1]));  
+               .text(_ary[x][0] +'|Lv:' + allDevil[_ary[x][0]][0] +'|Grade:' + _ary[x][1]));  
     	}
     }
 
@@ -210,7 +210,7 @@ var target = 'アシェラト';
 		var _str = '';
 		_str += select_option_val + ':';
 		for(var x in _ary){
-			_str += '<div>' + _ary[x][0] + '+' + _ary[x][1] + '</div>';
+			_str += '<div>[' + _ary[x][0] + '|Grade:' + allDevil[_ary[x][0]][1] + ']+[' + _ary[x][1] + '|Grade:' + allDevil[_ary[x][1]][1] +']</div>';
 		}
 		$('#devilCombinshow').html(_str);
     }
