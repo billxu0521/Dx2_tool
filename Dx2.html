@@ -294,6 +294,97 @@ var target = 'アシェラト';
 			index ++;
 		}
 	}
+
+
+	// Object Type: Devil Info
+	// Struct: Name - String
+    //         Race - String
+	//         Grade - Integer
+
+	// Button: 二身合體
+	function btn_DevilFusion() {
+		var seldevil1 = $('select[id="selDevil1"]').val();
+		var seldevil2 = $('select[id="selDevil2"]').val();
+		var _str = "";
+		if (seldevil1 == "default" | seldevil2 == "default") {	// Unselect
+			_str = "請選擇仲魔";
+		} else {
+			
+			var result = DevilFusion(seldevil1, seldevil2);	// Fusion
+			if (result == null) {	// No fusion result
+				_str = "無法合體";
+			} else {
+				_str = result.Race + "　" + result.Name + "\t　階級：" + result.Grade;
+			}
+		}
+		$('#txtFusionResult').html(_str);
+	}
+
+	// 二身合體 Devil Fusion
+	//   name1 - 素材1名稱 - String
+	//   name2 - 素材2名稱 - String
+	function DevilFusion(name1, name2) {
+		var i
+		var result;
+		var devil1 = {Name:name1, Race:allDevil[name1][2], Grade:parseInt(allDevil[name1][1])};
+		var devil2 = {Name:name2, Race:allDevil[name2][2], Grade:parseInt(allDevil[name2][1])};
+		
+		var tarName = "";
+		var tarRace = "";
+		var tarGrade = (devil1.Grade + devil2.Grade) / 2.0 + 1;	// Compute the result grade
+
+		var idx_result = 0;
+		var flg_finddevil = false;
+		
+		// Find the result race
+		for (i in twoDevil[devil1.Race]) {
+			if (twoDevil[devil1.Race][i][0] == devil2.Race) {
+				tarRace = twoDevil[devil1.Race][i][1];
+				break;
+			}
+		}
+		
+		if (tarRace == "" | tarRace == "-") {	// Cannot fuse
+			return null
+		}
+		
+		// Find upper bound of result grade
+		for (i = RankAllDevil.length - 1; i >= 0; i--) {	// Upward from grade 1
+			if (allDevil[RankAllDevil[i][0]][2] == tarRace) {
+				if (allDevil[RankAllDevil[i][0]][1] >= tarGrade) {
+					idx_result = i;
+					flg_finddevil = true;
+					break;
+				}
+			}
+		}
+		
+		if (!flg_finddevil) {	// No upper bound, must be the highest grade devil of the race
+			// find highest grade
+			for (i = 0; i < RankAllDevil.length; i++) {	// Downward from grade 99
+				if (allDevil[RankAllDevil[i][0]][2] == tarRace) {	// Match the race
+					idx_result = i;
+					break;
+				}
+			}
+		}
+		result = {Name:RankAllDevil[idx_result][0], Race:tarRace, Grade:parseInt(allDevil[RankAllDevil[idx_result][0]][1])};
+		return result;
+	}
+	
+	// 合體路徑規劃
+	function FusionPath(source, target) {
+		var src_devil = {Name:source, Race:allDevil[source][2], Grade:parseInt(allDevil[source][1])};
+		var tar_devil = {Name:target, Race:allDevil[target][2], Grade:parseInt(allDevil[target][1])};
+	}
+
+	function TestFunc() {
+		var devil1 = {Name:"阿斯萊爾", Race:"大天使", Grade:67};
+		var devil2 = {Name:"奧丁", Race:"魔神", Grade:73};
+		var result = DevilFusion("阿斯萊爾", "奧丁");
+		console.log(result);
+	}
+	
 </script>
 
 </head>
@@ -331,7 +422,26 @@ var target = 'アシェラト';
 	<input type='button' onclick='checkDevilCombin()' value='仲魔查詢'></input>
 	<div id='devilCombinshow' style="height: 100%;"></div>
 </div>
+</p>
+<div>二身合體查詢</div>
+<div>仲魔1:
+	<select class="devillist" id="selDevil1" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	仲魔2:
+	<select class="devillist" id="selDevil2" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	<input type='button' onclick='btn_DevilFusion()' value='合體'></input>
+	<div id='txtFusionResult' style="height: 100%;"></div>
+</div>
 
+<!----------
+<div>Testing</div>
+	<input type='button' onclick='TestFunc()' value='Test'></input>
+	<div id='devilCombinshow' style="height: 100%;"></div>
+</div>
+---------->
     </body>
 </html>
 
