@@ -334,8 +334,8 @@ var target = 'アシェラト';
 		var tarRace = "";
 		var tarGrade = (devil1.Grade + devil2.Grade) / 2.0 + 1;	// Compute the result grade
 
-		var idx_result = 0;
-		var flg_finddevil = false;
+		var idxResult = 0;
+		var flgFinddevil = false;
 		
 		// Find the result race
 		for (i in twoDevil[devil1.Race]) {
@@ -353,25 +353,174 @@ var target = 'アシェラト';
 		for (i = RankAllDevil.length - 1; i >= 0; i--) {	// Upward from grade 1
 			if (allDevil[RankAllDevil[i][0]][2] == tarRace) {
 				if (allDevil[RankAllDevil[i][0]][1] >= tarGrade) {
-					idx_result = i;
-					flg_finddevil = true;
+					idxResult = i;
+					flgFinddevil = true;
 					break;
 				}
 			}
 		}
 		
-		if (!flg_finddevil) {	// No upper bound, must be the highest grade devil of the race
+		if (!flgFinddevil) {	// No upper bound, must be the highest grade devil of the race
 			// find highest grade
 			for (i = 0; i < RankAllDevil.length; i++) {	// Downward from grade 99
 				if (allDevil[RankAllDevil[i][0]][2] == tarRace) {	// Match the race
-					idx_result = i;
+					idxResult = i;
 					break;
 				}
 			}
 		}
-		result = {Name:RankAllDevil[idx_result][0], Race:tarRace, Grade:parseInt(allDevil[RankAllDevil[idx_result][0]][1])};
+		result = {Name:RankAllDevil[idxResult][0], Race:tarRace, Grade:parseInt(allDevil[RankAllDevil[idxResult][0]][1])};
 		return result;
 	}
+
+	// Button: 逆二身合體
+	function btn_InversedFusionQuery() {
+		var selTarget = $('select[id="selInvTarget"]').val();
+		var selSource = $('select[id="selInvSource"]').val();
+		var selCondition = parseInt($('select[id="selInvCondition"]').val());
+		var result = [];
+		var _str = "";
+		var i;
+
+		if (selTarget == "default" | selSource == "default") {	// Unselect
+			_str = "請選擇仲魔";
+		} else {
+			result = invDevilFusion_condi(selTarget, selSource, selCondition);
+			if (result.length == 0 | result[0] == null) {
+				_str = "無法合體為目標惡魔"
+			} else {
+				switch (selCondition) {
+					case 0:	// List
+						for (i=0;i<result.length;i++) {
+							_str += result[i].Race + "　" + result[i].Name + "\t　階級：" + result[i].Grade + "<br>";
+						}
+						break;
+					case 1:	// Lowest Grade
+					case 2:	// Highest Grade
+						_str = result[0].Race + "　" + result[0].Name + "\t　階級：" + result[0].Grade;
+						break;
+					default:;
+				}
+			}
+		}
+		$('#txtInvFusionResult').html(_str);
+
+	}
+	// 逆二身合體 Inversed Devil Fusion
+	//   target - 目標合體仲魔名稱 - String
+	//   source - 合體用素材仲魔名稱 - String
+	//   condition - 合體素材尋找條件限制 - Integer
+	//               0: 列出各種族最低等素材
+	//               1: 各種族最低等素材結果中，選出最低階種族的惡魔，若兩惡魔同階級，只會列出其中一種
+	//               2: 各種族最低等素材結果中，選出最高階種族的惡魔，若兩惡魔同階級，只會列出其中一種
+	//   return - 最滿足條件仲魔名稱 - String
+	//            null: 無滿足條件之仲魔
+	function invDevilFusion_condi (target, source, condition=0) {
+		var MAX_GRADE = 99;
+	
+		var result = null;
+		var srcRace = allDevil[source][2];
+		var srcGrade = allDevil[source][1];
+		var tarRace = allDevil[target][2];
+		var tarGrade = allDevil[target][1];
+		var upperGrade = tarGrade;
+		var lowerGrade = 0;
+		var idxTarget = 0;
+		var idxStart = 0;
+		var idxEnd = RankAllDevil;
+		var flgHigherDevilExist = false;
+		var candidate_list = [];
+		var i, j;
+	
+		// Find grade lower bound
+		for (i=0;i<RankAllDevil.length;i++) {
+			if (RankAllDevil[i][0] == target) {
+				idxTarget = i;
+				break;
+			}
+		}
+	
+		for (i=idxTarget+1;i<RankAllDevil.length;i++) {
+			if (allDevil[RankAllDevil[i][0]][2] == tarRace) {
+				lowerGrade = parseInt(allDevil[RankAllDevil[i][0]][1]);
+				break;
+			}
+		}
+	
+		// Compute the range of grade.
+		lowerGrade = (lowerGrade-1) * 2 - srcGrade;
+		
+		// Check the upper bound (if there is no higher grade of devil)
+		for (i=idxTarget-1;i>=0;i++) {
+			if (allDevil[RankAllDevil[i][0]][2] == tarRace) {
+				flgHigherDevilExist = true;
+				break
+			}
+		}
+		if (flgHigherDevilExist) {
+			upperGrade = (upperGrade-1) * 2 - srcGrade;
+		} else {
+			upperGrade = MAX_GRADE;
+		}
+		
+		// Setup possible index range. The range must satisfy: upperGrade >= Grade > lowerGrade
+		for (i=0;i<RankAllDevil.length;i++) {
+			if (RankAllDevil[i][1] <= upperGrade) {
+				idxEnd = i;
+				break;
+			}
+		}
+
+		for (i=RankAllDevil.length-1;i>=0;i--) {
+			if (RankAllDevil[i][1] > lowerGrade) {
+				idxStart = i;
+				break;
+			}
+		}
+
+		// Find the possible race
+		for (i=0;i<twoDevil[srcRace].length;i++) {
+			if (twoDevil[srcRace][i][1] == tarRace) {
+				candidate_list.push({Name:"", Race:twoDevil[srcRace][i][0], Grade:0});
+			}
+		}
+		
+		// Find the devil of lowest grade in each race
+		for (i=0;i<candidate_list.length;i++) {
+			for (j=idxStart;j>=idxEnd;j--) {
+				if (allDevil[RankAllDevil[j][0]][2] == candidate_list[i].Race) {
+					candidate_list[i].Name = RankAllDevil[j][0];
+					candidate_list[i].Grade = parseInt(RankAllDevil[j][1]);
+					break;
+				}
+			}
+		}
+		
+		// Remove the impossible race combinations
+		for (i=0;i<candidate_list.length;i++) {
+			if (candidate_list[i].Grade == 0) {
+				candidate_list.splice(i, 1);
+				i--;
+			}
+		}
+		
+		// Sort the list based on grades
+		candidate_list.sort(function(a, b) {
+			return a.Grade - b.Grade;
+		});
+		
+		switch (condition) {
+			case 0:
+				return candidate_list;
+			case 1:
+				return [candidate_list[0]];
+			case 2:
+				return [candidate_list[candidate_list.length-1]];
+			default:
+				return null;
+		}
+	}
+	
 	
 	// 合體路徑規劃
 	function FusionPath(source, target) {
@@ -380,9 +529,10 @@ var target = 'アシェラト';
 	}
 
 	function TestFunc() {
-		var devil1 = {Name:"阿斯萊爾", Race:"大天使", Grade:67};
-		var devil2 = {Name:"奧丁", Race:"魔神", Grade:73};
-		var result = DevilFusion("阿斯萊爾", "奧丁");
+		var seldevil1 = $('select[id="selDevil1"]').val();
+		var seldevil2 = $('select[id="selDevil2"]').val();
+
+		var result = invDevilFusion_condi(seldevil1, seldevil2, 0);
 		console.log(result);
 	}
 	
@@ -437,12 +587,32 @@ var target = 'アシェラト';
 	<div id='txtFusionResult' style="height: 100%;"></div>
 </div>
 
-<!----------
+</p>
+<div>逆二身合體查詢 (非降階單層)</div>
+<div>目標仲魔:
+	<select class="devillist" id="selInvTarget" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	素材仲魔:
+	<select class="devillist" id="selInvSource" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	條件:
+	<select id="selInvCondition" >
+		<option selected value=0>列出各種族最低階惡魔</option>
+		<option value=1>列出各種族最低階中，最低階惡魔</option>
+		<option value=2>列出各種族最低階中，最高階惡魔</option>
+	</select>
+	<input type='button' onclick='btn_InversedFusionQuery()' value='檢索'></input>
+	<div id='txtInvFusionResult' style="height: 100%;"></div>
+</div>
+<!------------------
+</p>
 <div>Testing</div>
 	<input type='button' onclick='TestFunc()' value='Test'></input>
 	<div id='devilCombinshow' style="height: 100%;"></div>
 </div>
----------->
+------------>
     </body>
 </html>
 
