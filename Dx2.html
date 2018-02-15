@@ -570,66 +570,70 @@ var target = 'アシェラト';
 			_str = "請選擇仲魔";
 		} else {
 			result = FusionPath(selSourceDevil, selTargetDevil, selCondition);
-			_str = "<Table>\n";
-			_str += "<TBody align=\"center\">\n";
-			_str += "\t<tr>\n";
+			if (result != null) {
+				_str = "<Table>\n";
+				_str += "<TBody align=\"center\">\n";
+				_str += "\t<tr>\n";
 
-			_str +="\t\t<td>" + result[0][0].Race + "</td>\n";
-			for (i=1;i<result[0].length;i++) {
+				_str +="\t\t<td>" + result[0][0].Race + "</td>\n";
+				for (i=1;i<result[0].length;i++) {
+					_str +="\t\t<td></td>\n";
+					_str +="\t\t<td>" + result[0][i].Race + "</td>\n";
+				}
+
+				_str += "\t</tr>\n<tr>\n";
+
+				_str +="\t\t<td>" + result[0][0].Name + "</td>\n";
+				for (i=1;i<result[0].length;i++) {
+					_str +="\t\t<td>→</td>\n";
+					_str +="\t\t<td>" + result[0][i].Name + "</td>\n";
+				}
+				
+				_str += "\t</tr>\n<tr>\n";
+
+				_str +="\t\t<td>Grade: " + result[0][0].Grade + "</td>\n";
+				for (i=1;i<result[0].length;i++) {
+					_str +="\t\t<td></td>\n";
+					_str +="\t\t<td>Grade: " + result[0][i].Grade + "</td>\n";
+				}
+
+				_str += "\t</tr>\n<tr>\n";
+				
 				_str +="\t\t<td></td>\n";
-				_str +="\t\t<td>" + result[0][i].Race + "</td>\n";
-			}
+				for (i=0;i<result[1].length;i++) {
+					_str +="\t\t<td></td>\n";
+					_str +="\t\t<td>↑</td>\n";
+				}
 
-			_str += "\t</tr>\n<tr>\n";
-
-			_str +="\t\t<td>" + result[0][0].Name + "</td>\n";
-			for (i=1;i<result[0].length;i++) {
-				_str +="\t\t<td>→</td>\n";
-				_str +="\t\t<td>" + result[0][i].Name + "</td>\n";
-			}
-			
-			_str += "\t</tr>\n<tr>\n";
-
-			_str +="\t\t<td>Grade: " + result[0][0].Grade + "</td>\n";
-			for (i=1;i<result[0].length;i++) {
+				_str += "\t</tr>\n<tr>\n";
+				
 				_str +="\t\t<td></td>\n";
-				_str +="\t\t<td>Grade: " + result[0][i].Grade + "</td>\n";
-			}
+				for (i=0;i<result[1].length;i++) {
+					_str +="\t\t<td></td>\n";
+					_str +="\t\t<td>" + result[1][i].Race + "</td>\n";
+				}
 
-			_str += "\t</tr>\n<tr>\n";
-			
-			_str +="\t\t<td></td>\n";
-			for (i=0;i<result[1].length;i++) {
+				_str += "\t</tr>\n<tr>\n";
+				
 				_str +="\t\t<td></td>\n";
-				_str +="\t\t<td>↑</td>\n";
-			}
+				for (i=0;i<result[1].length;i++) {
+					_str +="\t\t<td></td>\n";
+					_str +="\t\t<td>" + result[1][i].Name + "</td>\n";
+				}
 
-			_str += "\t</tr>\n<tr>\n";
-			
-			_str +="\t\t<td></td>\n";
-			for (i=0;i<result[1].length;i++) {
+				_str += "\t</tr>\n<tr>\n";
+				
 				_str +="\t\t<td></td>\n";
-				_str +="\t\t<td>" + result[1][i].Race + "</td>\n";
+				for (i=0;i<result[1].length;i++) {
+					_str +="\t\t<td></td>\n";
+					_str +="\t\t<td>Grade: " + result[1][i].Grade + "</td>\n";
+				}
+
+
+				_str += "</tr>\n</TBody></Table>\n";
+			} else {
+				_str = "無符合條件之組合，請選擇其他條件";
 			}
-
-			_str += "\t</tr>\n<tr>\n";
-			
-			_str +="\t\t<td></td>\n";
-			for (i=0;i<result[1].length;i++) {
-				_str +="\t\t<td></td>\n";
-				_str +="\t\t<td>" + result[1][i].Name + "</td>\n";
-			}
-
-			_str += "\t</tr>\n<tr>\n";
-			
-			_str +="\t\t<td></td>\n";
-			for (i=0;i<result[1].length;i++) {
-				_str +="\t\t<td></td>\n";
-				_str +="\t\t<td>Grade: " + result[1][i].Grade + "</td>\n";
-			}
-
-
-			_str += "</tr>\n</TBody></Table>\n";
 		}
 		
 		
