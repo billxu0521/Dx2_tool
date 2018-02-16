@@ -667,18 +667,23 @@ var target = 'アシェラト';
 		var race_list = [];
 		var devil_list = [];
 		var devil_number_list = [];
+		var devil_history_list = [];	// prevent re-search the same devil
 		
 		var i;
 		var j;
 		
 		candidate_queue.push(srcDevil);
 		devil_number_list.push(1);
+		devil_history_list.push(srcDevil.Name);	// add to history
 		
 		while (candidate_queue.length > 0) {
 			candidateDevil = candidate_queue.pop();
 			path_stack.push(candidateDevil);
 //			console.log(candidateDevil);
 			reqDevil = (invDevilFusion_condi(tarDevil.Name, candidateDevil.Name, condition))[0];
+			race_list = [];
+			new_candidate_list = [];
+
 			if (reqDevil == null) {	// Cannot fuse, find alternative solutions
 				// search the best upgraded path
 				// find the possible fused races
@@ -693,15 +698,17 @@ var target = 'アシェラト';
 				}
 				
 				// find the closest upgrade for each possible race
-				new_candidate_list = [];
 				for (i=0;i<race_list.length;i++) {
 					// 有可能 A+B 無法產出C，因此需用invDevilFusion_condi檢查
 					for (j=RankAllDevil.length-1;j>=0;j--) {
 						if (allDevil[RankAllDevil[j][0]][2] == race_list[i] && RankAllDevil[j][1] > candidateDevil.Grade && RankAllDevil[j][1] <= tarDevil.Grade) {
-							reqDevil = (invDevilFusion_condi(RankAllDevil[j][0], candidateDevil.Name, condition))[0];
-							if (reqDevil != null) {
-								new_candidate_list.push({Name:RankAllDevil[j][0], Race:allDevil[RankAllDevil[j][0]][2], Grade:RankAllDevil[j][1]});
-								break;
+							if (devil_history_list.indexOf(RankAllDevil[j][0]) == -1) {	// Material not existed in the history list
+								reqDevil = (invDevilFusion_condi(RankAllDevil[j][0], candidateDevil.Name, condition))[0];
+								if (reqDevil != null) {
+									new_candidate_list.push({Name:RankAllDevil[j][0], Race:allDevil[RankAllDevil[j][0]][2], Grade:RankAllDevil[j][1]});
+									devil_history_list.push(RankAllDevil[j][0]);	// Add material to history list
+									break;
+								}
 							}
 						}
 					}
