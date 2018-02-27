@@ -65,7 +65,10 @@ var target = 'アシェラト';
 </head>
 
 <body>
-<div>仲魔路徑查詢</div>
+
+
+
+<div id="devilPath">仲魔路徑查詢</div>
 <div>持有仲魔:
 	<select class="devillist" id="startDevil" >
 		<option selected value="default">請選擇仲魔名稱</option>
@@ -80,7 +83,8 @@ var target = 'アシェラト';
 	<input type='button' onclick='setLine()' value='check!'></input>
 </div>
 <div>
-<div>逆二身查詢(種族)</div>
+
+<div id="inverseTwo">逆二身查詢(種族)</div>
 <select class="deviltypelist" id="twoDevilList">
 	<option selected value="default">請選擇仲魔種族</option>
 </select>
@@ -89,8 +93,7 @@ var target = 'アシェラト';
 </div>
 <div></div>
 
-<div></div>
-<div>仲魔合成查詢</div>
+<div id="devilPack">仲魔合成查詢</div>
 <select class="devillist" id="devilCombinList" >
 	<option selected value="default">請選擇仲魔名稱</option>
 </select>
@@ -98,7 +101,7 @@ var target = 'アシェラト';
 	<div id='devilCombinshow' style="height: 100%;"></div>
 </div>
 </p>
-<div>二身合體查詢</div>
+<div id="devilTwoPack">二身合體查詢</div>
 <div>仲魔1:
 	<select class="devillist" id="selDevil1" >
 		<option selected value="default">請選擇仲魔名稱</option>
