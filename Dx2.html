@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>sb</title>  
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+<script src="main.js"></script>
+
+<script src='PapaParse-4.3.2/papaparse.js'></script>
+
+<script type="text/javascript">
+var url_1 = 'https://billxu0521.github.io/Dx2_tool/two_devil.csv';
+var url_2 = 'https://billxu0521.github.io/Dx2_tool/all_devil.csv';
+var twoDevil = {};
+var allDevil = {}; //名稱 稀有度0 Grade1 種族2 類型3
+var RankAllDevil = []; //重新排序的惡魔
+var start = 'スライム';
+var target = 'アシェラト';
+
+//網頁開始執行
+    $(function ()  {
+    // Parse local CSV file
+
+	Papa.parse(url_1, {
+		download: true,
+	    complete: function(results) {
+	        //console.log("Finished:", results.data);
+	        var _ary = results.data;
+	        for(var a =1 ; a < _ary.length ; a++){
+	        	var _res_ary = [];
+	        	for(var b =1 ; b < _ary.length ; b++){
+	        		_res_ary.push([_ary[b][0],_ary[a][b]]);
+	        	}
+	        	twoDevil[_ary[a][0]] = _res_ary;
+	        	
+	        }
+	        
+	    }
+	});
+	Papa.parse(url_2, {
+		download: true,
+	    complete: function(results) {
+	        //console.log("Finished:", results.data);
+	        var _ary = results.data;
+	        for(var a =1 ; a < _ary.length ; a++){
+	        	allDevil[_ary[a][0]] = [_ary[a][1],_ary[a][2],_ary[a][3]];
+	        	RankAllDevil.push([_ary[a][0],parseInt(_ary[a][2])]);
+	        }
+	        //排序
+	        RankAllDevil = RankAllDevil.sort(function (a, b) {
+				//console.log(a[1]);
+				return b[1] - a[1];
+			});
+			//console.log(RankAllDevil);
+			showDevilTypeList();
+			showDevilList();
+	    }
+    });
+    
+});
+   
+</script>
+
+</head>
+
+<body>
+
+
+
+<div class="topDiv" id="devilPath">仲魔路徑查詢</div>
+<div>持有仲魔:
+	<select class="devillist" id="startDevil" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+</div>
+
+<div>目標仲魔:
+	<select class="devillist" id="targetDevil" >
+	<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	<div id='devilLineshow' style="height: 100%;"></div>
+	<input type='button' onclick='setLine()' value='check!'></input>
+</div>
+<div>
+
+<div class="topDiv" id="inverseTwo">逆二身查詢(種族)</div>
+<select class="deviltypelist" id="twoDevilList">
+	<option selected value="default">請選擇仲魔種族</option>
+</select>
+	<input type='button' onclick='checktwoDevil()' value='逆二身表查詢'></input>
+	<div id='twoDevilshow' style="height: 100%;"></div>
+</div>
+<div></div>
+
+<div class="topDiv" id="devilPack">仲魔合成查詢</div>
+<select class="devillist" id="devilCombinList" >
+	<option selected value="default">請選擇仲魔名稱</option>
+</select>
+	<input type='button' onclick='checkDevilCombin()' value='仲魔查詢'></input>
+	<div id='devilCombinshow' style="height: 100%;"></div>
+</div>
+</p>
+<div class="topDiv" id="devilTwoPack">二身合體查詢</div>
+<div>仲魔1:
+	<select class="devillist" id="selDevil1" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	仲魔2:
+	<select class="devillist" id="selDevil2" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	<input type='button' onclick='btn_DevilFusion()' value='合體'></input>
+	<div id='txtFusionResult' style="height: 100%;"></div>
+</div>
+
+<!----------
+<div>Testing</div>
+	<input type='button' onclick='TestFunc()' value='Test'></input>
+	<div id='devilCombinshow' style="height: 100%;"></div>
+</div>
+---------->
+    </body>
+</html>
+
