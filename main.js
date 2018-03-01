@@ -1,6 +1,6 @@
 
-var url_1 = 'https://billxu0521.github.io/Dx2_tool/two_devil.csv';
-var url_2 = 'https://billxu0521.github.io/Dx2_tool/all_devil.csv';
+var url_1 = 'http://dx2liber.gameqb.net/two_devil.csv';
+var url_2 = 'http://dx2liber.gameqb.net/all_devil.csv';
 var twoDevil = {};
 var allDevil = {}; //名稱 稀有度0 Grade1 種族2 類型3
 var RankAllDevil = []; //重新排序的惡魔
