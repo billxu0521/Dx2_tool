@@ -12,6 +12,7 @@
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
 <script src="main.js"></script>
+<script src="view.js"></script>
 <script src='PapaParse-4.3.2/papaparse.js'></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-89833109-8"></script>
@@ -24,8 +25,8 @@
 </script>
 
 <script type="text/javascript">
-var url_1 = 'http://dx2liber.gameqb.net/two_devil.csv';
-var url_2 = 'http://dx2liber.gameqb.net/all_devil.csv';
+var url_1 = 'https://billxu0521.github.io/Dx2_tool/two_devil.csv';
+var url_2 = 'https://billxu0521.github.io/Dx2_tool/all_devil.csv';
 var twoDevil = {};
 var allDevil = {}; //名稱 稀有度0 Grade1 種族2 類型3
 var RankAllDevil = []; //重新排序的惡魔
@@ -33,7 +34,7 @@ var start = 'スライム';
 var target = 'アシェラト';
 
 //網頁開始執行
-    $(function ()  {
+$(function ()  {
     // Parse local CSV file
 
 	Papa.parse(url_1, {
@@ -73,89 +74,108 @@ var target = 'アシェラト';
     });
     
 });
+
    
 </script>
 
 </head>
 
 <body>
-
-<!----------
-<div>Testing</div>
-	<input type='button' onclick='TestFunc()' value='Test'></input>
-	<div id='devilCombinshow' style="height: 100%;"></div>
+<div>仲魔路徑查詢</div>
+<div>持有仲魔:
+	<select class="devillist" id="startDevil" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
 </div>
----------->
-<h1>女神轉生</h1>
 
-<main>
-  <input id="tab1" type="radio" name="tabs" checked>
-  <label for="tab1">仲魔路徑查詢</label>
-    
-  <input id="tab2" type="radio" name="tabs">
-  <label for="tab2">逆二身查詢(種族)</label>
-    
-  <input id="tab3" type="radio" name="tabs">
-  <label for="tab3">仲魔合成查詢</label>
-    
-  <input id="tab4" type="radio" name="tabs">
-  <label for="tab4">二身合體查詢</label>
-    
-  <section id="content1">
-  <div id="devilPath">仲魔路徑查詢</div>
-	<div>持有仲魔:
-		<select class="devillist" id="startDevil" >
-			<option selected value="default">請選擇仲魔名稱</option>
-		</select>
-	</div>	
-	<div>目標仲魔:
+<div>目標仲魔:
 	<select class="devillist" id="targetDevil" >
 	<option selected value="default">請選擇仲魔名稱</option>
 	</select>
 	<div id='devilLineshow' style="height: 100%;"></div>
 	<input type='button' onclick='setLine()' value='check!'></input>
-	</div>
-  </section>
-    
-  <section id="content2">
-    <div id="inverseTwo">逆二身查詢(種族)</div>
-	<select class="deviltypelist" id="twoDevilList">
-		<option selected value="default">請選擇仲魔種族</option>
-	</select>
-		<input type='button' onclick='checktwoDevil()' value='逆二身表查詢'></input>
-		<div id='twoDevilshow' style="height: 100%;"></div>
-	</div>
-  </section>
-    
-  <section id="content3">
-    <div id="devilPack">仲魔合成查詢</div>
-	<select class="devillist" id="devilCombinList" >
+</div>
+<div>
+<div>逆二身查詢(種族)</div>
+<select class="deviltypelist" id="twoDevilList">
+	<option selected value="default">請選擇仲魔種族</option>
+</select>
+	<input type='button' onclick='checktwoDevil()' value='逆二身表查詢'></input>
+	<div id='twoDevilshow' style="height: 100%;"></div>
+</div>
+<div></div>
+
+<div></div>
+<div>仲魔合成查詢</div>
+<select class="devillist" id="devilCombinList" >
+	<option selected value="default">請選擇仲魔名稱</option>
+</select>
+	<input type='button' onclick='checkDevilCombin()' value='仲魔查詢'></input>
+	<div id='devilCombinshow' style="height: 100%;"></div>
+</div>
+</p>
+<div>二身合體查詢</div>
+<div>仲魔1:
+	<select class="devillist" id="selDevil1" >
 		<option selected value="default">請選擇仲魔名稱</option>
 	</select>
-		<input type='button' onclick='checkDevilCombin()' value='仲魔查詢'></input>
-		<div id='devilCombinshow' style="height: 100%;"></div>
-	</div>
-  </section>
-    
-  <section id="content4">
-    <div id="devilTwoPack">二身合體查詢</div>
-	<div>仲魔1:
-		<select class="devillist" id="selDevil1" >
-			<option selected value="default">請選擇仲魔名稱</option>
-		</select>
-		仲魔2:
-		<select class="devillist" id="selDevil2" >
-			<option selected value="default">請選擇仲魔名稱</option>
-		</select>
-		<input type='button' onclick='btn_DevilFusion()' value='合體'></input>
-		<div id='txtFusionResult' style="height: 100%;"></div>
-	</div>
-  </section>
-    
-</main>
+	仲魔2:
+	<select class="devillist" id="selDevil2" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	<input type='button' onclick='btnDevilFusion()' value='合體'></input>
+	<div id='txtFusionResult' style="height: 100%;"></div>
+</div>
+
+</p>
+<div>逆二身合體查詢 (單層非降階)</div>
+<div>目標仲魔:
+	<select class="devillist" id="selInvTarget" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	素材仲魔:
+	<select class="devillist" id="selInvSource" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	條件:
+	<select id="selInvCondition" >
+		<option selected value=0>列出各種族最低階仲魔</option>
+		<option value=1>列出各種族最低階中，最低階仲魔</option>
+		<option value=2>列出各種族最低階中，最高階仲魔</option>
+		<option value=3>列出各種族最低階中，最低階仲魔，且階級低於目標仲魔</option>
+		<option value=4>列出各種族最低階中，最高階仲魔，且階級低於目標仲魔</option>
+	</select>
+	<input type='button' onclick='btnInversedFusionQuery()' value='檢索'></input>
+	<div id='txtInvFusionResult' style="height: 100%;"></div>
+</div>
+
+</p>
+<div>惡魔合成路徑查詢</div>
+<div>目標仲魔:
+	<select class="devillist" id="selPathTarget" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	素材仲魔:
+	<select class="devillist" id="selPathSource" >
+		<option selected value="default">請選擇仲魔名稱</option>
+	</select>
+	階級/等級條件:
+	<select id="selPathCondition" >
+		<option selected value=5>素材皆為升階合體 (合體結果不在此限)</option>
+		<option value=3>素材等級皆低於合體結果 (合體結果不在此限)</option>
+		<option value=1>不限等級/階級條件</option>
+	</select>
+	<input type='button' onclick='btnPathFusionQuery()' value='檢索'></input>
+	<div id='txtPathFusionResult' style="height: 100%;"></div>
+</div>
 
 
-
+</p>
+<div>Testing</div>
+	<input type='button' onclick='TestFunc()' value='Test'></input>
+	<div id='devilCombinshow' style="height: 100%;"></div>
+</div>
     </body>
 </html>
+
 
