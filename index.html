@@ -11,8 +11,12 @@
 
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
-<script src="main.js"></script>
-<script src="view.js"></script>
+<script src="./js/main.js"></script>
+<script src="./js/view.js"></script>
+<script src="./js/cytoscape.min.js"></script>
+
+<script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
+<script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
 
 <script src='PapaParse-4.3.2/papaparse.js'></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -36,6 +40,7 @@ var target = 'アシェラト';
 
 //網頁開始執行
     $(function ()  {
+    	//nodeTest(); 
     // Parse local CSV file
 
 	Papa.parse(url_1, {
@@ -73,7 +78,8 @@ var target = 'アシェラト';
 			showDevilList();
 	    }
     });
-    
+   
+   
 });
    
 </script>
@@ -109,6 +115,8 @@ var target = 'アシェラト';
   <input id="tab6" type="radio" name="tabs">
   <label for="tab6">惡魔合成路徑查詢</label>
 
+  <input id="tab7" type="radio" name="tabs">
+  <label for="tab7">路徑圖</label>
 
   <section id="content1">
   <div id="devilPath">仲魔路徑查詢</div>
@@ -212,6 +220,13 @@ var target = 'アシェラト';
 	</div>
    </section>
 
+   <section id="content7">
+   <div>路徑圖</div>
+   <div id='TEST' style="height: 300px;">
+   <div id='cy'></div>
+   </div>
+   <script src="./js/code.js"></script>
+   </section>
 
 </main>
 

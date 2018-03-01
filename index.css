@@ -33,6 +33,7 @@ main {
   max-width: 60%;
   padding: 50px;
   margin: 0 auto;
+  position: relative;
   background: #fff;
 }
 
@@ -40,6 +41,8 @@ section {
   display: none;
   padding: 20px 0 0;
   border-top: 1px solid #ddd;
+  position: relative;
+  height: 100%;
 }
 
 input {
@@ -86,7 +89,8 @@ input:checked + label {
 #tab3:checked ~ #content3,
 #tab4:checked ~ #content4,
 #tab5:checked ~ #content5,
-#tab6:checked ~ #content6 {
+#tab6:checked ~ #content6,
+#tab7:checked ~ #content7 {
   display: block;
 }
 
@@ -104,4 +108,13 @@ input:checked + label {
   label {
     padding: 15px;
   }
+}
+
+#cy {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  left: 0;
+  top: 0;
+  z-index: 999;
 }
