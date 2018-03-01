@@ -30,7 +30,7 @@ p {
 
 main {
   min-width: 320px;
-  max-width: 900px;
+  max-width: 60%;
   padding: 50px;
   margin: 0 auto;
   background: #fff;
@@ -63,9 +63,11 @@ label:before {
 }
 
 label[for*='1']:before { content: '\f1cb'; }
-label[for*='2']:before { content: '\f17d'; }
-label[for*='3']:before { content: '\f16b'; }
-label[for*='4']:before { content: '\f1a9'; }
+label[for*='2']:before { content: '\f1cb'; }
+label[for*='3']:before { content: '\f1cb'; }
+label[for*='4']:before { content: '\f1cb'; }
+label[for*='5']:before { content: '\f1cb'; }
+label[for*='6']:before { content: '\f1cb'; }
 
 label:hover {
   color: #888;
@@ -82,7 +84,9 @@ input:checked + label {
 #tab1:checked ~ #content1,
 #tab2:checked ~ #content2,
 #tab3:checked ~ #content3,
-#tab4:checked ~ #content4 {
+#tab4:checked ~ #content4,
+#tab5:checked ~ #content5,
+#tab6:checked ~ #content6 {
   display: block;
 }
 
