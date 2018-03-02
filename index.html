@@ -40,7 +40,7 @@ var target = 'アシェラト';
 
 //網頁開始執行
     $(function ()  {
-    	//nodeTest(); 
+   	
     // Parse local CSV file
 
 	Papa.parse(url_1, {
@@ -77,6 +77,11 @@ var target = 'アシェラト';
 			showDevilTypeList();
 			showDevilList();
 	    }
+    });
+
+	//點擊此按鈕才會繪製路徑
+    $("#tab7").click(function () {
+    	nodeTest(); 
     });
    
    
@@ -116,7 +121,7 @@ var target = 'アシェラト';
   <label for="tab6">惡魔合成路徑查詢</label>
 
   <input id="tab7" type="radio" name="tabs">
-  <label for="tab7">路徑圖</label>
+  <label for="tab7">測試路徑圖</label>
 
   <section id="content1">
   <div id="devilPath">仲魔路徑查詢</div>
@@ -221,11 +226,11 @@ var target = 'アシェラト';
    </section>
 
    <section id="content7">
-   <div>路徑圖</div>
+   <div>測試路徑圖</div>
    <div id='TEST' style="height: 300px;">
-   <div id='cy'></div>
+   <div id='nodeTest'></div>
    </div>
-   <script src="./js/code.js"></script>
+   
    </section>
 
 </main>
