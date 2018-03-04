@@ -125,6 +125,14 @@ var target = 'アシェラト';
     }
 
     /**
+     * @param {Object} Devil Description
+     * @param {String} Devil.Name 惡魔名稱
+     * @param {String} Devil.Race 惡魔種族
+     * @param {Integer} Devil.Grade 惡魔階級
+     */
+
+
+    /**
      * 惡魔合成素材查詢、去除重複及過濾條件，並依素材等級平均&差距排序
      * @param {String} target 合體惡魔名稱
      * @param {Integer} condition 搜尋條件，預設2
@@ -562,9 +570,41 @@ var target = 'アシェラト';
     }
 
     /**
+     * 尋訪合成路徑
+     * @param {Array} path fusionPath函式結果
+     * @returns {Array} Array[0] 合成路徑陣列 {Devil: 惡魔資訊, LinkTo: 連結子節點編號}
+     *                  Array[1] 所需惡魔數量 {Devil: 惡魔資訊, Amount: 數量}
+     */
+    function traversalPath (path) {
+        var i;
+        var _result_path = [];
+        var _result_amount = [];
+        var _index = -1;
+        if (path == null) {
+            return null;            
+        }
+        _result_amount.push({Devil: path[0][0], Amount: 1});    // Add the acquired devil to the amount list
+        for (i=0;i<path[0].length - 1; i++) {
+            // Construct the Path
+            _result_path.push({Devil: path[0][i], LinkTo: (i+1)*2});
+            _result_path.push({Devil: path[1][i], LinkTo: (i+1)*2});
+            
+            // Compute the amount of required Devil
+            _index = _result_amount.map(function(x) {return x.Devil.Name;}).indexOf(path[1][i].Name);
+            if (_index == -1) { // Not yet exist
+                _result_amount.push({Devil: path[1][i], Amount: 1});                
+            } else {    // Existed, increase the amount
+                _result_amount[_index].Amount++;
+            }
+        }
+        _result_path.push({Devil: path[0][path[0].length - 1], LinkTo: -1});    // Add the finally fusion devil to the path
+        return [_result_path, _result_amount];
+    }
+
+    /**
      * 惡魔合成樹
      * @param {String} target 合體惡魔名稱 
-     * @param {Associative String Array} material_list 允許使用素材惡魔
+     * @param {Associative String Array} material_list 允許使用素材惡魔 (可由createMaterialList建立)
      *                                                key: 惡魔名稱
      *                                                Array[key][0]: 合體[key]惡魔所使用惡魔1名稱
      *                                                Array[key][1]: 合體[key]惡魔所使用惡魔2名稱
@@ -658,36 +698,57 @@ var target = 'アシェラト';
                             }
                     }
             }
-
-            //console.log(material_list);
-    /* 遞迴寫法
-            if (material_list.hasOwnProperty(target)) {	// Can be fused by materials
-                    return true;
-            } else if (useless_devil_list.indexOf(target) != -1) {	// already searched
-                    return false;
-            } else {	// Never searched
-                    var candidateList = devilCombin_Filter(target, condition);
-                    for (var i = 0; i< candidateList.length; i++) {
-                            if (FusionTree(candidateList[i][0], material_list, condition, useless_devil_list)&&FusionTree(candidateList[i][1], material_list, condition, useless_devil_list)) {	// Can be fused
-                                    material_list[target] = [candidateList[i][0], candidateList[i][1]];
-                                    return true;
-                            } else {
-                                    useless_devil_list.push(target);
-                            }
-                    }
-                    return false;
-            }
-    */
+            return material_list;
     }
 
-
     /**
-     * 瀏覽顯示合成樹各節點 (FIFO)
+     * 尋訪合成樹 (FIFO)
      * @param {String} target 合體目標(root node)
      * @param {Associative String Array} tree 惡魔合成樹
-     * @returns {String} 合成樹各節點結構
+     * @returns {Array} Array[0] 合成樹陣列 {Devil: 惡魔資訊, Parent: 連結親節點編號}
+     *                  Array[1] 所需惡魔數量 {Devil: 惡魔資訊, Amount: 數量}
      */
-    function travelTree(target, tree) {
+    function traversalTree(target, tree) {
+            var _traveler = "";	// traveler node
+            var _queue = [];	// FIFO
+            var _str = "";
+            var _result_tree = [];
+            var _result_amount = [];
+            var _devil_info = {Name:"", Race:"", Grade:0};
+            var _index = -1;
+            var i;
+
+            if (!tree.hasOwnProperty(target)) {                
+                return null;
+            }
+
+            
+            _queue.push(target);
+            _devil_info = {Name: target, Race:allDevil[target][2], Grade:parseInt(allDevil[target][1])};
+            _result_tree.push({Devil:_devil_info, Parent: -1});
+
+            for (i=0;i<_result_tree.length;i++) {
+                _traveler = _result_tree[i].Devil.Name;
+                if (tree[_traveler] == null) {  // leaf node
+                    _index = _result_amount.map(function(x) {return x.Devil.Name;}).indexOf(_traveler);
+                    if (_index == -1) { // Not yet exist
+                        _result_amount.push({Devil: _result_tree[i].Devil, Amount: 1});                
+                    } else {    // Existed, increase the amount
+                        _result_amount[_index].Amount++;
+                    }
+                    continue;
+                }
+                // Devil 1
+                _devil_info = {Name: tree[_traveler][0], Race:allDevil[tree[_traveler][0]][2], Grade:parseInt(allDevil[tree[_traveler][0]][1])};
+                _result_tree.push({Devil:_devil_info, Parent: i});
+                // Devil 2
+                _devil_info = {Name: tree[_traveler][1], Race:allDevil[tree[_traveler][1]][2], Grade:parseInt(allDevil[tree[_traveler][1]][1])};
+                _result_tree.push({Devil:_devil_info, Parent: i});
+            }
+
+            return [_result_tree, _result_amount];
+
+            /*
             var _traveler = null;	// travel node
             var _queue = [];	// FIFO
             var _str = "";
@@ -710,34 +771,42 @@ var target = 'アシェラト';
                     }
             }
             return _str;
+        */
+            
+    }
+
+
+    /**
+     * 
+     * @param {Array} materials 素材惡魔名稱陣列
+     * @returns {AssociativeStringArray} 素材惡魔名稱陣列
+     *                                   key: 惡魔名稱
+     *                                   Array[key] = null: 指定素材惡魔
+     */
+    function createMaterialList(materials) {
+        var _result = [];
+        var i;
+        for (i=0;i<materials.length;i++) {
+            _result[materials[i]] = null;
+        }
+        return _result;
     }
 
     function TestFunc() {
             var selSourceDevil = "美人魚";
             var selTargetDevil = "薩麥爾";
-            var result = [];
+            var _result = [];
 
             if (selSourceDevil == "default" || selTargetDevil == "default") {	// Unselect
                     _str = "請選擇仲魔";
                     console.log("請選擇仲魔");
             } else {
-                    var material = [];
-                    material["哈索爾"] = null;
-                    material["弗莫爾"] = null;
-                    material["能天使"] = null;
-                    material["塔姆林"] = null;
-                    material["海奎特"] = null;
-                    material["增長天"] = null;
-                    material["美人魚"] = null;
-                    material["巴風特"] = null;
-                    material["佛鈕司"] = null;
-                    fusionTree(selTargetDevil, material, 1);
-                    console.log(selTargetDevil);
-                    console.log(material);
-                    travelTree(selTargetDevil, material);
-
+                    var _materials = ["哈索爾", "弗莫爾", "能天使", "塔姆林", "海奎特", "增長天", "美人魚", "巴風特", "佛鈕司"];
+                    var _material_list = createMaterialList(_materials);
+                    _result = traversalTree(selTargetDevil, fusionTree(selTargetDevil, _material_list, 1))
+                    console.log(_result);
             }
-            //console.log(result);
+            //console.log(_result);
             //$('#devilCombinshow').html(_str);
 
     }

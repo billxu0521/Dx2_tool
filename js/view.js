@@ -6,6 +6,7 @@
             var _sel_target_devil = $('select[id="selPathTarget"]').val();
             var _sel_condition = parseInt($('select[id="selPathCondition"]').val());
             var _result = [];
+            var _result2 = [];
             var _str = "";
             var i;
 
@@ -13,6 +14,8 @@
                     _str = "請選擇仲魔";
             } else {
                     _result = fusionPath(_sel_source_devil, _sel_target_devil, _sel_condition);
+                    _result2 = traversalPath(_result);
+                    console.log(_result2);
                     if (_result != null) {
                             _str = "<Table>\n";
                             _str += "<TBody align=\"center\">\n";
@@ -118,10 +121,7 @@
             $('#txtInvFusionResult').html(_str);
 
     }
-    // Object Type: Devil Info
-    // Struct: Name - String
-    //         Race - String
-    //         Grade - Integer
+
     /**
      * Button: 二身合體
      */ 
@@ -218,6 +218,7 @@
 
 //繪製測試路徑
 function nodeTest(){
+    /*
     //宣告這個外掛的物件cytoscape
     var nodeTest = window.nodeTest = cytoscape({
         //在這個元素中繪製
@@ -270,14 +271,177 @@ function nodeTest(){
       },
     });
 
-
+    
     //動態增加節點繪製
     for (var i=2; i<10; i++) {
-    nodeTest.add([
-        {elements:"nodes", data: {id: 'n'+i}},
-        {elements:"edges", data: {source:'n'+i, target: 'n1' }}
-    ])
-}
+        nodeTest.add([
+            {elements:"nodes", data: {id: 'n'+i}},
+            {elements:"edges", data: {source:'n'+i, target: 'n1' }}
+        ])
+    }
+    */
+   	
+    /*
+    // Example code for fusion path
+    var _sel_source_devil = $('select[id="selPathSource"]').val();
+    var _sel_target_devil = $('select[id="selPathTarget"]').val();
+    var _sel_condition = parseInt($('select[id="selPathCondition"]').val());
+    var _result = [];
+    var _str = "";
+    var i;
+    var _str = "";
+    var _str_src = "";
+    var _str_tar = "";
 
+    if (_sel_source_devil == "default" || _sel_target_devil == "default") { // Unselect
+        // error msg: no devil selected
+        // _str = "請選擇仲魔";
+    } else {
+        _result = traversalPath(fusionPath(_sel_source_devil, _sel_target_devil, _sel_condition));
+        if (_result != null) {      
+            // cytoscape declairation w/o drawing
+            var nodeTest = window.nodeTest = cytoscape({
+                //在這個元素中繪製
+                container: document.getElementById('nodeTest'),
+
+                boxSelectionEnabled: false,
+                autounselectify: true,
+
+                layout: {
+                    name: 'dagre'
+                },
+                //這邊宣告繪製方式
+                style: [
+                {
+                  selector: 'node',
+                  style: {
+                    'content': 'data(id)',
+                    'text-opacity': 0.5,
+                    'text-valign': 'center',
+                    'text-halign': 'right',
+                    'background-color': '#11479e'
+                  }
+                },
+
+                {
+                  selector: 'edge',
+                  style: {
+                    'curve-style': 'bezier',
+                    'width': 4,
+                    'target-arrow-shape': 'triangle',
+                    'line-color': '#9dbaea',
+                    'target-arrow-color': '#9dbaea'
+                  }
+                }
+                ]
+            });
+            
+            // Draw Node
+            for (i=0;i<_result[0].length;i++) {
+                _str = "Devil " + i + " " + _result[0][i].Devil.Name;
+                nodeTest.add([
+                    {elements:"nodes", data: {id: _str}}
+                ]);
+            }
+            
+            // Draw Edge
+            for (i=0;i<_result[0].length;i++) {
+                if (_result[0][i].LinkTo != -1) {
+                    _str_src = "Devil " + i + " " + _result[0][i].Devil.Name;
+                    _str_tar = "Devil " + _result[0][i].LinkTo + " " + _result[0][_result[0][i].LinkTo].Devil.Name;
+                    nodeTest.add([
+                        {elements:"edges", data: {source:_str_src, target: _str_tar}}
+                    ]);
+                }
+            }
+        } else {
+            // error msg: cannot fused
+        }
+    }
+    */
+
+    ///*
+    // Example code for fusion tree
+    var _selTargetDevil = "薩麥爾";
+    var _result = [];
+
+    if (_selTargetDevil == "default") {	// Unselect
+        // error msg: no devil selected
+    } else {
+        var _materials = ["哈索爾", "弗莫爾", "能天使", "塔姆林", "海奎特", "增長天", "美人魚", "巴風特", "佛鈕司"];    // UI needed. Pack from selected check boxes
+        var _material_list = createMaterialList(_materials);
+        _result = traversalTree(_selTargetDevil, fusionTree(_selTargetDevil, _material_list, 1))
+        if (_result != null) {
+            // cytoscape declairation w/o drawing
+            var nodeTest = window.nodeTest = cytoscape({
+                //在這個元素中繪製
+                container: document.getElementById('nodeTest'),
+
+                boxSelectionEnabled: false,
+                autounselectify: true,
+
+                
+                layout: {
+                    name: 'grid'
+                },
+                //這邊宣告繪製方式
+                style: [
+                {
+                  selector: 'node',
+                  style: {
+                    'content': 'data(id)',
+                    'text-opacity': 0.5,
+                    'text-valign': 'center',
+                    'text-halign': 'right',
+                    'background-color': '#11479e'
+                  }
+                },
+
+                {
+                  selector: 'edge',
+                  style: {
+                    'curve-style': 'bezier',
+                    'width': 4,
+                    'target-arrow-shape': 'triangle',
+                    'line-color': '#9dbaea',
+                    'target-arrow-color': '#9dbaea'
+                  }
+                }
+                ]
+            });
+            
+            // Draw Node
+            for (i=0;i<_result[0].length;i++) {
+                _str = "Devil " + i + " " + _result[0][i].Devil.Name;
+                nodeTest.add([
+                    {elements:"nodes", data: {id: _str}}
+                ]);
+            }
+            
+            // Draw Edge
+            for (i=0;i<_result[0].length;i++) {
+                if (_result[0][i].Parent != -1) {
+                    _str_src = "Devil " + _result[0][i].Parent + " " + _result[0][_result[0][i].Parent].Devil.Name;
+                    _str_tar = "Devil " + i + " " + _result[0][i].Devil.Name;
+                    nodeTest.add([
+                        {elements:"edges", data: {source:_str_src, target: _str_tar}}
+                    ]);
+                    
+
+                }
+            }
+            //重新設定輸出排列
+            var layout = nodeTest.layout({
+              //層級式排列
+              name: 'dagre'
+            });
+
+            layout.run(); 
+                    
+        } else {
+            // error msg: cannot fused
+        }
+    }
+    //*/
 }
 
