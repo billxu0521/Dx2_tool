@@ -215,7 +215,119 @@
         }
     }
 
+//檢索路徑
+function setPathTree(){
+    var _trgdevil = $('#selPathTarget').val();
+    var _devil_ary = [];
+    var _sele = $('.materialDevil');
+    _sele.each(function( index ) {
+        _devil_ary.push($( this ).val());
+    });
+    showPathTree(_trgdevil , _devil_ary);
+}
 
+
+//繪製路徑
+function showPathTree(trgdevil,devilary){
+    // Example code for fusion tree
+    var _selTargetDevil = trgdevil;
+    var _result = [];
+    console.log(trgdevil);
+    console.log(devilary);
+    if (_selTargetDevil == "default") { // Unselect
+        // error msg: no devil selected
+    } else {
+        var _materials = devilary;    // UI needed. Pack from selected check boxes
+        var _material_list = createMaterialList(_materials);
+        _result = traversalTree(_selTargetDevil, fusionTree(_selTargetDevil, _material_list, 1))
+        console.log(_result);
+        if (_result != null) {
+            // cytoscape declairation w/o drawing
+            var nodeTest = window.nodeTest = cytoscape({
+                //在這個元素中繪製
+                container: document.getElementById('shownode'),
+
+                boxSelectionEnabled: false,
+                autounselectify: true,
+
+                
+                layout: {
+                    name: 'grid'
+                },
+                //這邊宣告繪製方式
+                style: [
+                {
+                  selector: 'node',
+                  style: {
+                    'content': 'data(id)',
+                    'text-opacity': 0.5,
+                    'text-valign': 'center',
+                    'text-halign': 'right',
+                    'background-color': '#11479e'
+                  }
+                },
+
+                {
+                  selector: 'edge',
+                  style: {
+                    'curve-style': 'bezier',
+                    'width': 4,
+                    'target-arrow-shape': 'triangle',
+                    'line-color': '#9dbaea',
+                    'target-arrow-color': '#9dbaea'
+                  }
+                }
+                ]
+            });
+            
+            // Draw Node
+            for (i=0;i<_result[0].length;i++) {
+                _str = "Devil " + i + " " + _result[0][i].Devil.Name;
+                nodeTest.add([
+                    {elements:"nodes", data: {id: _str}}
+                ]);
+            }
+            
+            // Draw Edge
+            for (i=0;i<_result[0].length;i++) {
+                if (_result[0][i].Parent != -1) {
+                    _str_src = "Devil " + _result[0][i].Parent + " " + _result[0][_result[0][i].Parent].Devil.Name;
+                    _str_tar = "Devil " + i + " " + _result[0][i].Devil.Name;
+                    nodeTest.add([
+                        {elements:"edges", data: {source:_str_src, target: _str_tar}}
+                    ]);
+                    
+
+                }
+            }
+            //重新設定輸出排列
+            var layout = nodeTest.layout({
+              //層級式排列
+              name: 'circle'
+            });
+            console.log('run');
+            layout.run(); 
+                    
+        } else {
+            // error msg: cannot fused
+        }
+    }
+    //*/
+}
+
+function selectIngredient(select)
+{
+    var _sel_target_devil = $(select).val();
+    var $ul = $(select).prev('ul');
+    if ($ul.find('input[value=' + $(select).val() + ']').length == 0)
+    $ul.append('<li onclick="$(this).remove();">' +
+    '<input type="hidden" class="materialDevil" value="' + 
+    _sel_target_devil + '" /> ' +
+    _sel_target_devil + '</li>');
+}
+
+
+//之後拿掉
 //繪製測試路徑
 function nodeTest(){
     /*
@@ -433,7 +545,7 @@ function nodeTest(){
             //重新設定輸出排列
             var layout = nodeTest.layout({
               //層級式排列
-              name: 'dagre'
+              name: 'circle'
             });
 
             layout.run(); 

@@ -81,7 +81,7 @@ var target = 'アシェラト';
 
 	//點擊此按鈕才會繪製路徑
     $("#tab7").click(function () {
-    	nodeTest(); 
+    	
     });
    
    
@@ -197,7 +197,7 @@ var target = 'アシェラト';
 	</div>
   </section>
 
-   <section id="content6">
+   <!--section id="content6">
    <div>惡魔合成路徑查詢</div>
 	<div>目標仲魔:
 		<select class="devillist" id="selPathTarget" >
@@ -223,13 +223,35 @@ var target = 'アシェラト';
 		<input type='button' onclick='TestFunc()' value='Test'></input>
 		<div id='devilCombinshow' style="height: 100%;"></div>
 	</div>
-   </section>
+   </section-->
 
    <section id="content7">
-   <div>測試路徑圖</div>
-   <div id='TEST' style="height: 300px;">
-   <div id='nodeTest'></div>
-   </div>
+   <div>惡魔合成路徑查詢2</div>
+	<div>目標仲魔:
+		<select class="devillist" id="selPathTarget" >
+			<option selected value="default">請選擇仲魔名稱</option>
+		</select>
+		素材仲魔:
+
+		<ul> 
+		 
+		</ul>
+		<select class="devillist" id="selPathSource" onchange="selectIngredient(this);">
+		 <option value="default">請選擇仲魔名稱</option>
+		 
+		</select>
+
+		<!--select multiple="multiple" class="devillist" id="selPathSource" MULTIPLE>
+			<option selected value="default">請選擇仲魔名稱</option>
+		</select-->
+		<input type='button' onclick='setPathTree()' value='檢索'></input>
+		</div>
+		<div id="showtree" style="height: 300px;">
+   		<div id="shownode"></div>
+  		</div>
+
+	</p>
+	
    
    </section>
 
