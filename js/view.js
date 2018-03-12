@@ -305,7 +305,7 @@ function showPathTree(trgdevil,devilary){
             //重新設定輸出排列
             var layout = nodeTest.layout({
               //層級式排列
-              name: 'grid'
+              name: 'dagre'
             });
             console.log('run');
             layout.run(); 
