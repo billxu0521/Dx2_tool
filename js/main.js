@@ -609,13 +609,13 @@ var target = 'アシェラト';
      *                                                Array[key][0]: 合體[key]惡魔所使用惡魔1名稱
      *                                                Array[key][1]: 合體[key]惡魔所使用惡魔2名稱
      * @param {String Array} useless_devil_list 無法用於合體的惡魔名稱，初始為[]
-     * @param {Integer} condition 搜尋條件，預設2
+     * @param {Integer} condition 搜尋條件，預設1
      *                        0: 使用的素材無任何限制
      *                        1: 合體素材階級需低於目標惡魔
      *                        2: 合體素材星數需低於目標惡魔
      * @returns {Associative String Array} 允許使用素材惡魔 (同material_list)
      */
-    function fusionTree(target, material_list, condition = 2) {
+    function fusionTree(target, material_list, condition = 1) {
             var _stack = [];
             var _devil_pair = [];
             var _search_history = [];	// used to prevent the duplicated search. record the history when the devil name push into _stack

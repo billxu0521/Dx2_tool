@@ -244,8 +244,17 @@ var target = 'アシェラト';
 		<!--select multiple="multiple" class="devillist" id="selPathSource" MULTIPLE>
 			<option selected value="default">請選擇仲魔名稱</option>
 		</select-->
+		條件:
+		<select id="selInvCondition" >
+			<option selected value=0>列出各種族最低階仲魔</option>
+			<option value=1>列出各種族最低階中，最低階仲魔</option>
+			<option value=2>列出各種族最低階中，最高階仲魔</option>
+			<option value=3>列出各種族最低階中，最低階仲魔，且階級低於目標仲魔</option>
+			<option value=4>列出各種族最低階中，最高階仲魔，且階級低於目標仲魔</option>
+		</select>
 		<input type='button' onclick='setPathTree()' value='檢索'></input>
 		</div>
+
 		<div id="showtree" style="height: 300px;">
    		<div id="shownode"></div>
   		</div>

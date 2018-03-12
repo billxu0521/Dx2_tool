@@ -218,17 +218,18 @@
 //檢索路徑
 function setPathTree(){
     var _trgdevil = $('#selPathTarget').val();
+    var _cond = $('#selInvCondition').val();
     var _devil_ary = [];
     var _sele = $('.materialDevil');
     _sele.each(function( index ) {
         _devil_ary.push($( this ).val());
     });
-    showPathTree(_trgdevil , _devil_ary);
+    showPathTree(_trgdevil , _devil_ary , _cond);
 }
 
 
 //繪製路徑
-function showPathTree(trgdevil,devilary){
+function showPathTree(trgdevil,devilary,cond){
     // Example code for fusion tree
     var _selTargetDevil = trgdevil;
     var _result = [];
@@ -241,7 +242,7 @@ function showPathTree(trgdevil,devilary){
         console.log(trgdevil);
         console.log(_materials);
         console.log(_material_count);
-        _result = traversalTree(_selTargetDevil, fusionTree(_selTargetDevil, _material_list, _material_count))
+        _result = traversalTree(_selTargetDevil, fusionTree(_selTargetDevil, _material_list, cond))
         console.log(_result);
         if (_result != null) {
             // cytoscape declairation w/o drawing
