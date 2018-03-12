@@ -662,7 +662,7 @@ var target = 'アシェラト';
                             if (!material_list.hasOwnProperty(_devil_pair[0]) && _search_history.indexOf(_devil_pair[0]) == -1) {	// haven't searched
                                     _new_fusion_table = devilCombin_Filter(_devil_pair[0], condition);
                                     if (_new_fusion_table.length > 0) {
-                                            _stack.push({name:_devil_pair[0], fusion_table:_new_fusion_table});
+                                            _stack.push({name:_devil_pair[0], fusion_table:_new_fusion_table, check: 0});
                                             _search_history.push(_devil_pair[0]);
                                     } else {	// cannot fused
                                             useless_devil_list.push(_devil_pair[0]);
@@ -673,7 +673,7 @@ var target = 'アシェラト';
                             if (!material_list.hasOwnProperty(_devil_pair[1]) && _search_history.indexOf(_devil_pair[1]) == -1) {	// haven't searched
                                     _new_fusion_table = devilCombin_Filter(_devil_pair[1], condition);
                                     if (_new_fusion_table.length > 0) {
-                                            _stack.push({name:_devil_pair[1], fusion_table:_new_fusion_table});
+                                            _stack.push({name:_devil_pair[1], fusion_table:_new_fusion_table, check: 0});
                                             _search_history.push(_devil_pair[1]);
                                     } else {	// cannot fused
                                             useless_devil_list.push(_devil_pair[1]);
@@ -685,6 +685,11 @@ var target = 'アシェラト';
                                     _buffer_devil = _stack[_stack.length-1].fusion_table.shift();
                                     _stack[_stack.length-1].fusion_table.push(_buffer_devil);
                                     _stack[_stack.length-1].check++;
+                                    if (_stack[_stack.length-1].fusion_table.length == _stack[_stack.length-1].check) {	// table need to be delay
+	                                    _buffer_table = _stack.pop();
+	                                    _buffer_table.check = 0;
+	                                    _stack.unshift(_buffer_table);
+	                            	}
                             }
                     } else {	// no need to search the pair, check if devil is useless
                             _stack[_stack.length-1].fusion_table.shift();
@@ -692,9 +697,9 @@ var target = 'アシェラト';
                                     useless_devil_list.push(_stack[_stack.length-1].name);
                                     _stack.pop();
                             } else if (_stack[_stack.length-1].fusion_table.length == _stack[_stack.length-1].check) {	// table need to be delay
-                                    _buffer_table = _stack.pop();
-                                    _buffer_table.check = 0;
-                                    _stack.unshift(_buffer_table);
+	                                _buffer_table = _stack.pop();
+	                                _buffer_table.check = 0;
+	                                _stack.unshift(_buffer_table);
                             }
                     }
             }

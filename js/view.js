@@ -232,14 +232,16 @@ function showPathTree(trgdevil,devilary){
     // Example code for fusion tree
     var _selTargetDevil = trgdevil;
     var _result = [];
-    console.log(trgdevil);
-    console.log(devilary);
     if (_selTargetDevil == "default") { // Unselect
         // error msg: no devil selected
     } else {
         var _materials = devilary;    // UI needed. Pack from selected check boxes
         var _material_list = createMaterialList(_materials);
-        _result = traversalTree(_selTargetDevil, fusionTree(_selTargetDevil, _material_list, 1))
+        var _material_count = _materials.length;
+        console.log(trgdevil);
+        console.log(_materials);
+        console.log(_material_count);
+        _result = traversalTree(_selTargetDevil, fusionTree(_selTargetDevil, _material_list, _material_count))
         console.log(_result);
         if (_result != null) {
             // cytoscape declairation w/o drawing
@@ -303,7 +305,7 @@ function showPathTree(trgdevil,devilary){
             //重新設定輸出排列
             var layout = nodeTest.layout({
               //層級式排列
-              name: 'circle'
+              name: 'grid'
             });
             console.log('run');
             layout.run(); 
