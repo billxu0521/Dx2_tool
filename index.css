@@ -110,6 +110,30 @@ input:checked + label {
   }
 }
 
+#rank1devil{
+  border: 1px solid #ddd;
+}
+
+#rank2devil{
+  border: 1px solid #ddd;
+}
+
+#rank3devil{
+  border: 1px solid #ddd;
+}
+
+#rank4devil{
+  border: 1px solid #ddd;
+}
+
+#rank5devil{
+  border: 1px solid #ddd;
+}
+
+.devilcheck{
+  margin-bottom:10px;
+}
+
 #shownode {
   width: 100%;
   height: 100%;

@@ -215,17 +215,44 @@
         }
     }
 
-//檢索路徑
-function setPathTree(){
-    var _trgdevil = $('#selPathTarget').val();
-    var _cond = $('#selInvCondition').val();
-    var _devil_ary = [];
-    var _sele = $('.materialDevil');
-    _sele.each(function( index ) {
-        _devil_ary.push($( this ).val());
-    });
-    showPathTree(_trgdevil , _devil_ary , _cond);
-}
+    //區塊顯示所有仲魔
+    function showDevilListArea(){
+        var _obj= allDevil;
+        //console.log(_obj);  
+        var $cSel = $('#devilalllist'); 
+        $cSel.append($("<div>1星</div><div id='rank1devil'></div>"));
+        $cSel.append($("<div>2星</div><div id='rank2devil'></div>"));
+        $cSel.append($("<div>3星</div><div id='rank3devil'></div>"));
+        $cSel.append($("<div>4星</div><div id='rank4devil'></div>"));
+        $cSel.append($("<div>5星</div><div id='rank5devil'></div>"));
+        for(var x in _obj){
+            if(_obj[x][0] == '1'){
+                $("#rank1devil").append($("<div style='display:inline-block'><input type='checkbox' class='devilcheck' id='" + x + "' value='" + x + "'>" + x + "</div>"));
+            }else if(_obj[x][0] == '2'){
+                $("#rank2devil").append($("<div style='display:inline-block'><input type='checkbox' class='devilcheck' id='" + x + "' value='" + x + "'>" + x + "</div>"));
+            }else if(_obj[x][0] == '3'){
+                $("#rank3devil").append($("<div style='display:inline-block'><input type='checkbox' class='devilcheck' id='" + x + "' value='" + x + "'>" + x + "</div>"));
+            }else if(_obj[x][0] == '4'){
+                $("#rank4devil").append($("<div style='display:inline-block'><input type='checkbox' class='devilcheck' id='" + x + "' value='" + x + "'>" + x + "</div>"));
+            }else if(_obj[x][0] == '5'){
+                $("#rank5devil").append($("<div style='display:inline-block'><input type='checkbox' class='devilcheck' id='" + x + "' value='" + x + "'>" + x + "</div>"));
+            }
+        }
+
+    }
+
+    //檢索路徑
+    function setPathTree(){
+        var _trgdevil = $('#selPathTarget').val();
+        var _cond = $('#selInvCondition').val();
+        var _devil_ary = [];
+        var _sele = $('#devilalllist input:checked');
+        _sele.each(function( index ) {
+            console.log(_sele.val());
+            _devil_ary.push($( this ).val());
+        });
+        showPathTree(_trgdevil , _devil_ary , _cond);
+    }
 
 
 //繪製路徑
