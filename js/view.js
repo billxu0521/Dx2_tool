@@ -92,7 +92,7 @@
     function btnInversedFusionQuery() {
             var _sel_target = $('select[id="selInvTarget"]').val();
             var _sel_source = $('select[id="selInvSource"]').val();
-            var _sel_condition = parseInt($('select[id="selInvCondition"]').val());
+            var _sel_condition = parseInt($('#content5 select[id="selInvCondition"]').val());
             var _result = [];
             var _str = "";
             var i;
@@ -220,11 +220,11 @@
         var _obj= allDevil;
         //console.log(_obj);  
         var $cSel = $('#devilalllist'); 
-        $cSel.append($("<div>1星</div><div id='rank1devil'></div>"));
-        $cSel.append($("<div>2星</div><div id='rank2devil'></div>"));
-        $cSel.append($("<div>3星</div><div id='rank3devil'></div>"));
-        $cSel.append($("<div>4星</div><div id='rank4devil'></div>"));
-        $cSel.append($("<div>5星</div><div id='rank5devil'></div>"));
+        $cSel.append($("<div class='ranktitle' onclick=\"divShowSwitch(this);\">1星<a class='titleswitch'>+</div></div><div id='rank1devil'></div>"));
+        $cSel.append($("<div class='ranktitle' onclick=\"divShowSwitch(this);\">2星<a class='titleswitch'>+</div></div><div id='rank2devil'></div>"));
+        $cSel.append($("<div class='ranktitle' onclick=\"divShowSwitch(this);\">3星<a class='titleswitch'>+</div></div><div id='rank3devil'></div>"));
+        $cSel.append($("<div class='ranktitle' onclick=\"divShowSwitch(this);\">4星<a class='titleswitch'>+</div></div><div id='rank4devil'></div>"));
+        $cSel.append($("<div class='ranktitle' onclick=\"divShowSwitch(this);\">5星<a class='titleswitch'>+</div></div><div id='rank5devil'></div>"));
         for(var x in _obj){
             if(_obj[x][0] == '1'){
                 $("#rank1devil").append($("<div style='display:inline-block'><input type='checkbox' class='devilcheck' id='" + x + "' value='" + x + "'>" + x + "</div>"));
@@ -244,7 +244,7 @@
     //檢索路徑
     function setPathTree(){
         var _trgdevil = $('#selPathTarget').val();
-        var _cond = $('#selInvCondition').val();
+        var _cond = $('#content6 #selInvCondition').val();
         var _devil_ary = [];
         var _sele = $('#devilalllist input:checked');
         _sele.each(function( index ) {
@@ -339,7 +339,7 @@ function showPathTree(trgdevil,devilary,cond){
             layout.run(); 
                     
         } else {
-            // error msg: cannot fused
+            $('#shownode').html('沒有結果');
         }
     }
     //*/
@@ -356,6 +356,16 @@ function selectIngredient(select)
     _sel_target_devil + '</li>');
 }
 
+//惡魔列表區塊隱藏開關
+function divShowSwitch(select){
+    if($(select).next().is(':visible')){
+        $(select).next().hide();
+        $(select).children().text('-');
+      }else{
+        $(select).next().show();
+        $(select).children().text('+');
+      }
+    }
 
 //之後拿掉
 //繪製測試路徑
