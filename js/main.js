@@ -459,7 +459,7 @@ var target = 'アシェラト';
                             }
                             return [_candidate_list[_candidate_list.length-1]];
                     default:
-                            return null;
+                            return [];
             }
     }
 
@@ -503,7 +503,7 @@ var target = 'アシェラト';
             while (_candidate_queue.length > 0) {
                     _candidate_devil = _candidate_queue.pop();
                     _path_stack.push(_candidate_devil);
-			console.log(_tar_devil.Name+','+_candidate_devil.Name);
+			//console.log(_tar_devil.Name+','+_candidate_devil.Name);
                     _req_devil = (invDevilFusionCondition(_tar_devil.Name, _candidate_devil.Name, condition))[0];
                     _race_list = [];
                     _new_candidate_list = [];

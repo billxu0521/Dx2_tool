@@ -334,7 +334,7 @@
                   //層級式排列
                   name: 'dagre'
                 });
-                console.log('run');
+                console.log('Treerun');
                 layout.run(); 
                         
             } else {
@@ -368,10 +368,10 @@
         }
 
 
-    //呼叫繪製合成樹
+    //呼叫繪製合成路徑
     function setPath(){
         var _trgdevil = $('#selPathTarget').val();
-        var _cond = $('#selPathCondition').val();
+        var _cond = parseInt($('#selPathCondition').val());
         var _source_ary = $('#selPathSource').val();
         console.log('tar:'+_trgdevil+',source:'+_source_ary+'cond:'+_cond);
         showPath(_trgdevil , _source_ary , _cond);
@@ -394,6 +394,7 @@
             // _str = "請選擇仲魔";
         } else {
             _result = traversalPath(fusionPath(_sel_source_devil, _sel_target_devil, _sel_condition));
+            console.log(_result);
             if (_result != null) {      
                 // cytoscape declairation w/o drawing
                 var nodeTest = window.nodeTest = cytoscape({
@@ -450,6 +451,15 @@
                         ]);
                     }
                 }
+
+                //重新設定輸出排列
+                var layout = nodeTest.layout({
+                  //層級式排列
+                  name: 'dagre'
+                });
+                console.log('Treerun');
+                layout.run(); 
+                        
             } else {
                 // error msg: cannot fused
             }
