@@ -116,6 +116,9 @@ var target = 'アシェラト';
   <input id="tab6" type="radio" name="tabs" checked>
   <label for="tab6">惡魔合成路徑查詢</label>
 
+  <input id="tab7" type="radio" name="tabs" checked>
+  <label for="tab7">惡魔合成樹查詢</label>
+
   <section id="content1">
   <div id="devilPath">仲魔路徑查詢</div>
 	<div>持有仲魔:
@@ -190,45 +193,43 @@ var target = 'アシェラト';
 	</div>
   </section>
 
-   <!--section id="content6">
-   <div>惡魔合成路徑查詢</div>
+   <section id="content6">
+   <div id="devilpath">惡魔合成路徑查詢</div>
 	<div>目標仲魔:
 		<select class="devillist" id="selPathTarget" >
 			<option selected value="default">請選擇仲魔名稱</option>
 		</select>
-		素材仲魔:
+		<br>素材仲魔:
 		<select class="devillist" id="selPathSource" >
 			<option selected value="default">請選擇仲魔名稱</option>
 		</select>
-		階級/等級條件:
+		<br>階級/等級條件:
 		<select id="selPathCondition" >
 			<option selected value=5>素材皆為升階合體 (合體結果不在此限)</option>
 			<option value=3>素材等級皆低於合體結果 (合體結果不在此限)</option>
 			<option value=1>不限等級/階級條件</option>
 		</select>
-		<input type='button' onclick='btnPathFusionQuery()' value='檢索'></input>
+		<input type='button' onclick='setPath()' value='檢索'></input>
 		<div id='txtPathFusionResult' style="height: 100%;"></div>
 	</div>
 
+	<div id="showpath" style="height: 300px;">
+   		<div id="showpathnode"></div>
+  		</div>
 
-	</p>
-	<div>Testing</div>
-		<input type='button' onclick='TestFunc()' value='Test'></input>
-		<div id='devilCombinshow' style="height: 100%;"></div>
-	</div>
-   </section-->
+   </section>
 
-   <section id="content6">
-   <div>惡魔合成路徑查詢</div>
+   <section id="content7">
+   <div id="deviltree">惡魔合成樹查詢</div>
 	<div>目標仲魔:
-		<select class="devillist" id="selPathTarget" >
+		<select class="devillist" id="selTreeTarget" >
 			<option selected value="default">請選擇仲魔名稱</option>
 		</select>
 		<!--select multiple="multiple" class="devillist" id="selPathSource" MULTIPLE>
 			<option selected value="default">請選擇仲魔名稱</option>
 		</select-->
 		<br>條件:
-		<select id="selInvCondition" >
+		<select id="selInvTreeCondition" >
 			<option value=0>使用的素材無任何限制</option>
 			<option selected value=1>合體素材階級需低於目標惡魔</option>
 			<option value=2>合體素材星數需低於目標惡魔</option>
@@ -242,7 +243,7 @@ var target = 'アシェラト';
 	</div>
 
 		<div id="showtree" style="height: 300px;">
-   		<div id="shownode"></div>
+   		<div id="showtreenode"></div>
   		</div>
 
 	</p>
